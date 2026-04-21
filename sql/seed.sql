@@ -1,61 +1,74 @@
+-- EventHub sample data
+-- Import this file after sql/schema.sql.
+
 USE eventhub;
 
--- Predvolený administrátor:
--- používateľské meno: admin
--- heslo: password
--- V databáze je uložený iba hash hesla vytvorený cez password_hash().
+SET NAMES utf8mb4;
 
+-- Default admin:
+-- username: admin
+-- password: password
+-- The value below is a bcrypt hash compatible with PHP password_verify().
+-- In a real project, create a new hash with:
+-- echo password_hash('your-password', PASSWORD_DEFAULT);
 INSERT INTO admins (username, password)
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi')
-ON DUPLICATE KEY UPDATE username = username;
+VALUES
+    ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 
-INSERT INTO categories (name) VALUES
+-- Main event categories.
+INSERT INTO categories (name)
+VALUES
     ('Koncerty'),
-    ('Workshopy'),
+    ('Šport'),
     ('Konferencie'),
-    ('Komunitné stretnutia')
-ON DUPLICATE KEY UPDATE name = VALUES(name);
+    ('Festivaly'),
+    ('Workshopy');
 
+-- Sample events for the public website.
 INSERT INTO events (category_id, title, description, location, event_date, image)
-SELECT c.id,
-       'Jarný mestský koncert',
-       'Večer plný živej hudby, lokálnych interpretov a príjemnej atmosféry v centre mesta.',
-       'Hlavné námestie, Bratislava',
-       '2026-05-15 19:00:00',
-       'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=80'
-FROM categories c
-WHERE c.name = 'Koncerty'
-AND NOT EXISTS (SELECT 1 FROM events WHERE title = 'Jarný mestský koncert');
+VALUES
+    (
+        (SELECT id FROM categories WHERE name = 'Koncerty'),
+        'Jarný mestský koncert',
+        'Večer plný živej hudby, lokálnych interpretov a príjemnej atmosféry v centre mesta.',
+        'Hlavné námestie, Bratislava',
+        '2026-05-15 19:00:00',
+        'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=80'
+    ),
+    (
+        (SELECT id FROM categories WHERE name = 'Šport'),
+        'Nočný beh mestom',
+        'Komunitné športové podujatie pre rekreačných aj pokročilých bežcov so štartom v centre mesta.',
+        'Námestie SNP, Banská Bystrica',
+        '2026-05-28 20:30:00',
+        'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1200&q=80'
+    ),
+    (
+        (SELECT id FROM categories WHERE name = 'Konferencie'),
+        'Tech konferencia 2026',
+        'Celodenné stretnutie vývojárov, dizajnérov a projektových manažérov s prednáškami o modernom webe.',
+        'Kultúrne centrum, Žilina',
+        '2026-09-24 09:00:00',
+        'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80'
+    ),
+    (
+        (SELECT id FROM categories WHERE name = 'Festivaly'),
+        'Letný food festival',
+        'Festival dobrého jedla, lokálnych predajcov a sprievodného programu pre rodiny aj priateľov.',
+        'Mestský park, Nitra',
+        '2026-07-18 11:00:00',
+        'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80'
+    ),
+    (
+        (SELECT id FROM categories WHERE name = 'Workshopy'),
+        'PHP workshop pre začiatočníkov',
+        'Praktický workshop zameraný na základy PHP, prácu s formulármi a bezpečné pripojenie k databáze cez PDO.',
+        'Coworking Centrum, Košice',
+        '2026-06-03 16:30:00',
+        'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80'
+    );
 
-INSERT INTO events (category_id, title, description, location, event_date, image)
-SELECT c.id,
-       'PHP workshop pre začiatočníkov',
-       'Praktický workshop zameraný na základy PHP, prácu s formulármi a bezpečné pripojenie k databáze cez PDO.',
-       'Coworking Centrum, Košice',
-       '2026-06-03 16:30:00',
-       'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80'
-FROM categories c
-WHERE c.name = 'Workshopy'
-AND NOT EXISTS (SELECT 1 FROM events WHERE title = 'PHP workshop pre začiatočníkov');
-
-INSERT INTO events (category_id, title, description, location, event_date, image)
-SELECT c.id,
-       'Tech konferencia 2026',
-       'Celodenné stretnutie vývojárov, dizajnérov a projektových manažérov s prednáškami o modernom webe.',
-       'Kultúrne centrum, Žilina',
-       '2026-09-24 09:00:00',
-       'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80'
-FROM categories c
-WHERE c.name = 'Konferencie'
-AND NOT EXISTS (SELECT 1 FROM events WHERE title = 'Tech konferencia 2026');
-
-INSERT INTO events (category_id, title, description, location, event_date, image)
-SELECT c.id,
-       'Večer lokálnej komunity',
-       'Neformálne stretnutie ľudí z okolia, ktoré podporuje nové kontakty, nápady a spoluprácu.',
-       'Mestská knižnica, Trnava',
-       '2026-07-10 18:00:00',
-       'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1200&q=80'
-FROM categories c
-WHERE c.name = 'Komunitné stretnutia'
-AND NOT EXISTS (SELECT 1 FROM events WHERE title = 'Večer lokálnej komunity');
+-- Optional contact message for dashboard demonstration.
+INSERT INTO contact_messages (name, email, message)
+VALUES
+    ('Jana Nováková', 'jana@example.com', 'Dobrý deň, chcela by som sa informovať o možnosti pridania vlastného podujatia.');
