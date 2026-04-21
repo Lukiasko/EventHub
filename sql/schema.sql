@@ -13,6 +13,7 @@ SET NAMES utf8mb4;
 DROP TABLE IF EXISTS contact_messages;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS admins;
 
 -- Administrátori pre chránenú administračnú časť.
@@ -25,6 +26,22 @@ CREATE TABLE admins (
 
     PRIMARY KEY (id),
     UNIQUE KEY idx_admins_username (username)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+-- Používateľské účty pre verejnú časť webu.
+-- Heslá sú uložené ako hashe vytvorené funkciou password_hash().
+CREATE TABLE users (
+    id INT UNSIGNED AUTO_INCREMENT,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(180) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (id),
+    UNIQUE KEY idx_users_username (username),
+    UNIQUE KEY idx_users_email (email)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;

@@ -78,6 +78,12 @@ a {
     font-weight: 700;
 }
 
+.nav-user {
+    padding: 10px 12px;
+    color: var(--teal);
+    font-weight: 800;
+}
+
 .nav-links a:hover {
     background: #efe8dc;
 }
@@ -457,6 +463,17 @@ textarea {
     border-radius: 8px;
     background: #ffffff;
     box-shadow: var(--shadow);
+}
+
+.auth-switch {
+    margin: 0;
+    color: var(--muted);
+    text-align: center;
+}
+
+.auth-switch a {
+    color: var(--teal);
+    font-weight: 800;
 }
 
 .alert,

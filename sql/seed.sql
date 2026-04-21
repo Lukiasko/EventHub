@@ -15,6 +15,14 @@ INSERT INTO admins (username, password)
 VALUES
     ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 
+-- Predvolený používateľ:
+-- používateľské meno: user
+-- email: user@example.com
+-- heslo: password
+INSERT INTO users (username, email, password)
+VALUES
+    ('user', 'user@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+
 -- Základné kategórie podujatí.
 INSERT INTO categories (name)
 VALUES
