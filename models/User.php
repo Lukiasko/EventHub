@@ -22,10 +22,14 @@ class User extends Model
     {
         $stmt = $this->db->prepare(
             'SELECT * FROM users
-             WHERE username = :login OR email = :login
+             WHERE username = :username OR email = :email
              LIMIT 1'
         );
-        $stmt->execute(['login' => trim($login)]);
+        $login = trim($login);
+        $stmt->execute([
+            'username' => $login,
+            'email' => $login,
+        ]);
         $user = $stmt->fetch();
 
         return $user ?: null;
