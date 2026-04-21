@@ -22,5 +22,6 @@
             <input type="password" name="password" required>
         </label>
         <button class="btn btn-primary" type="submit">Prihlásiť sa</button>
+        <p class="auth-switch">Nemáte používateľský účet? <a href="<?= url('register') ?>">Registrovať sa</a></p>
     </form>
 </section>

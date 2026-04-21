@@ -88,6 +88,15 @@ a {
     background: #efe8dc;
 }
 
+.nav-links .nav-register {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.nav-links .nav-register:hover {
+    background: var(--accent-dark);
+}
+
 .nav-toggle {
     display: none;
     border: 0;
