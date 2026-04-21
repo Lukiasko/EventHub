@@ -1,7 +1,7 @@
 <section class="admin-page-header">
     <div>
         <p class="muted">Prehľad systému</p>
-        <h1>Dashboard</h1>
+        <h1>Prehľad</h1>
     </div>
     <a class="btn" href="<?= url('admin_event_create') ?>">Pridať podujatie</a>
 </section>

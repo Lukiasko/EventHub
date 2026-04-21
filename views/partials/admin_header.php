@@ -8,9 +8,9 @@
 </head>
 <body>
     <aside class="admin-sidebar">
-        <a class="admin-brand" href="<?= url('admin_dashboard') ?>">EventHub Admin</a>
+        <a class="admin-brand" href="<?= url('admin_dashboard') ?>">EventHub Administrácia</a>
         <nav>
-            <a href="<?= url('admin_dashboard') ?>">Dashboard</a>
+            <a href="<?= url('admin_dashboard') ?>">Prehľad</a>
             <a href="<?= url('admin_events') ?>">Podujatia</a>
             <a href="<?= url('admin_categories') ?>">Kategórie</a>
             <a href="<?= url('home') ?>">Verejný web</a>

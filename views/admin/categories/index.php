@@ -1,6 +1,6 @@
 <section class="admin-page-header">
     <div>
-        <p class="muted">CRUD</p>
+        <p class="muted">Správa údajov</p>
         <h1>Kategórie</h1>
     </div>
     <a class="btn" href="<?= url('admin_category_create') ?>">Nová kategória</a>
