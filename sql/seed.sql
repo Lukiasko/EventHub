@@ -13,7 +13,8 @@ SET NAMES utf8mb4;
 -- echo password_hash('admin123', PASSWORD_DEFAULT);
 INSERT INTO admins (username, password)
 VALUES
-    ('admin', '$2y$10$Hj0lZO7sxJs3GTEr7daUu.BP2Puuvzc.tK3.Zdr/TyGfrehTRYiiW');
+    ('admin', '$2y$10$Hj0lZO7sxJs3GTEr7daUu.BP2Puuvzc.tK3.Zdr/TyGfrehTRYiiW')
+ON DUPLICATE KEY UPDATE password = VALUES(password);
 
 -- Predvolený používateľ:
 -- používateľské meno: user
@@ -21,7 +22,8 @@ VALUES
 -- heslo: password
 INSERT INTO users (username, email, password)
 VALUES
-    ('user', 'user@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+    ('user', 'user@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi')
+ON DUPLICATE KEY UPDATE username = username;
 
 -- Základné kategórie podujatí.
 INSERT INTO categories (name)
