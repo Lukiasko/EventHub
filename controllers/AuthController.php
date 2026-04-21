@@ -5,10 +5,12 @@ declare(strict_types=1);
 class AuthController extends Controller
 {
     private Auth $auth;
+    private User $userModel;
 
     public function __construct()
     {
         $this->auth = new Auth(new Admin());
+        $this->userModel = new User();
     }
 
     public function showLogin(): void
@@ -23,23 +25,32 @@ class AuthController extends Controller
         }
 
         $errors = [];
-        $username = '';
+        $login = '';
 
         if (is_post()) {
-            $username = trim((string) ($_POST['username'] ?? ''));
+            $login = trim((string) ($_POST['login'] ?? ''));
             $password = (string) ($_POST['password'] ?? '');
 
             if (!validate_csrf()) {
                 $errors[] = 'Formulár nie je platný. Skúste ho odoslať znova.';
             }
 
-            if ($username === '' || $password === '') {
-                $errors[] = 'Vyplňte používateľské meno aj heslo.';
+            if ($login === '' || $password === '') {
+                $errors[] = 'Všetky polia sú povinné.';
             }
 
-            if ($errors === [] && $this->auth->attempt($username, $password)) {
+            if ($errors === [] && $this->auth->attempt($login, $password)) {
+                Session::remove('user_id');
+                Session::remove('username');
                 Session::flash('success', 'Boli ste úspešne prihlásený.');
                 redirect('admin_dashboard');
+            }
+
+            if ($errors === [] && $this->attemptUserLogin($login, $password)) {
+                Session::remove('admin_id');
+                Session::remove('admin_username');
+                Session::flash('success', 'Boli ste úspešne prihlásený.');
+                redirect('home');
             }
 
             if ($errors === []) {
@@ -48,9 +59,9 @@ class AuthController extends Controller
         }
 
         $this->render('auth/login', [
-            'pageTitle' => 'Prihlásenie do administrácie',
+            'pageTitle' => 'Prihlásenie',
             'errors' => $errors,
-            'username' => $username,
+            'login' => $login,
         ]);
     }
 
@@ -60,5 +71,20 @@ class AuthController extends Controller
         Session::start();
         Session::flash('success', 'Boli ste odhlásený.');
         redirect('login');
+    }
+
+    private function attemptUserLogin(string $login, string $password): bool
+    {
+        $user = $this->userModel->findByLogin($login);
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            return false;
+        }
+
+        Session::regenerate();
+        Session::set('user_id', (int) $user['id']);
+        Session::set('username', $user['username']);
+
+        return true;
     }
 }

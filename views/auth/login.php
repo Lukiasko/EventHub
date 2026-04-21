@@ -1,9 +1,9 @@
 <section class="login-section">
     <form class="login-card" method="post" action="<?= url('login') ?>">
         <?= csrf_field() ?>
-        <p class="eyebrow">Administrácia</p>
-        <h1>Prihlásenie do administrácie</h1>
-        <p>Prístup je určený iba pre správcu portálu EventHub.</p>
+        <p class="eyebrow">EventHub</p>
+        <h1>Prihlásenie</h1>
+        <p>Prihláste sa ako používateľ alebo administrátor.</p>
 
         <?php if ($errors !== []): ?>
             <div class="alert alert-error">
@@ -14,13 +14,14 @@
         <?php endif; ?>
 
         <label>
-            Používateľské meno
-            <input type="text" name="username" value="<?= e($username) ?>" required autofocus>
+            Email alebo meno
+            <input type="text" name="login" value="<?= e($login) ?>" required autofocus>
         </label>
         <label>
             Heslo
             <input type="password" name="password" required>
         </label>
         <button class="btn btn-primary" type="submit">Prihlásiť sa</button>
+        <p class="auth-switch">Nemáte účet? <a href="<?= url('register') ?>">Registrovať sa</a></p>
     </form>
 </section>

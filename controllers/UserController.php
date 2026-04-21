@@ -36,7 +36,7 @@ class UserController extends Controller
             if ($errors === []) {
                 $this->userModel->create($data);
                 Session::flash('success', 'Registrácia bola úspešná. Teraz sa môžete prihlásiť.');
-                redirect('user_login');
+                redirect('login');
             }
         }
 

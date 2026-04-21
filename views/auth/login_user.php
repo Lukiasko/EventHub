@@ -1,5 +1,5 @@
 <section class="login-section">
-    <form class="login-card" method="post" action="<?= url('user_login') ?>">
+    <form class="login-card" method="post" action="<?= url('login') ?>">
         <?= csrf_field() ?>
         <p class="eyebrow">Používateľský účet</p>
         <h1>Prihlásenie</h1>

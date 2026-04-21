@@ -20,7 +20,7 @@
                     <a href="<?= url('user_logout') ?>">Odhlásenie</a>
                 <?php elseif (!Session::get('admin_id')): ?>
                     <a class="nav-register" href="<?= url('register') ?>">Registrácia</a>
-                    <a href="<?= url('user_login') ?>">Prihlásenie</a>
+                    <a href="<?= url('login') ?>">Prihlásenie</a>
                 <?php endif; ?>
                 <?php if (Session::get('admin_id')): ?>
                     <a href="<?= url('admin_dashboard') ?>">Administrácia</a>
