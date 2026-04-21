@@ -9,7 +9,7 @@
                 <a class="btn btn-secondary" href="<?= url('contact') ?>">Kontaktovať nás</a>
             </div>
         </div>
-        <div class="hero-panel" aria-label="Ukážka podujatí">
+        <div class="hero-panel" aria-label="Najbližšie podujatie">
             <div class="hero-card">
                 <span>Najbližšie</span>
                 <strong><?= isset($events[0]) ? e($events[0]['title']) : 'Nové podujatia už čoskoro' ?></strong>
@@ -74,9 +74,9 @@
 <section class="section">
     <div class="container about-band">
         <div>
-            <p class="eyebrow">O projekte</p>
+            <p class="eyebrow">O EventHube</p>
             <h2>Jednoduchá správa podujatí v čistom PHP</h2>
         </div>
-        <p>EventHub spája verejný katalóg podujatí s administračnou časťou pre správu kategórií a udalostí. Projekt používa objektovo orientované PHP, PDO, sessions a bezpečné ukladanie hesiel.</p>
+        <p>EventHub spája verejný katalóg podujatí s administračnou časťou pre správu kategórií a udalostí. Aplikácia používa objektovo orientované PHP, PDO, sessions a bezpečné ukladanie hesiel.</p>
     </div>
 </section>

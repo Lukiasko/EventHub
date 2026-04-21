@@ -7,7 +7,7 @@
                 <p>Moderný portál pre vyhľadávanie a správu podujatí.</p>
             </div>
             <div>
-                <span>Školský PHP projekt</span>
+                <span>PHP aplikácia pre správu podujatí</span>
                 <span><?= date('Y') ?></span>
             </div>
         </div>

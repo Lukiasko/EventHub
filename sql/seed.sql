@@ -1,21 +1,21 @@
--- EventHub sample data
--- Import this file after sql/schema.sql.
+-- Dáta pre prvé spustenie aplikácie.
+-- Tento súbor importujte až po vytvorení schémy.
 
 USE eventhub;
 
 SET NAMES utf8mb4;
 
--- Default admin:
--- username: admin
--- password: password
--- The value below is a bcrypt hash compatible with PHP password_verify().
--- In a real project, create a new hash with:
+-- Predvolený administrátor:
+-- používateľské meno: admin
+-- heslo: password
+-- Hodnota nižšie je bcrypt hash kompatibilný s funkciou password_verify().
+-- Pri zmene hesla vytvorte nový hash pomocou:
 -- echo password_hash('your-password', PASSWORD_DEFAULT);
 INSERT INTO admins (username, password)
 VALUES
     ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 
--- Main event categories.
+-- Základné kategórie podujatí.
 INSERT INTO categories (name)
 VALUES
     ('Koncerty'),
@@ -24,7 +24,7 @@ VALUES
     ('Festivaly'),
     ('Workshopy');
 
--- Sample events for the public website.
+-- Podujatia pre verejnú časť webu.
 INSERT INTO events (category_id, title, description, location, event_date, image)
 VALUES
     (
@@ -46,7 +46,7 @@ VALUES
     (
         (SELECT id FROM categories WHERE name = 'Konferencie'),
         'Tech konferencia 2026',
-        'Celodenné stretnutie vývojárov, dizajnérov a projektových manažérov s prednáškami o modernom webe.',
+        'Celodenné stretnutie vývojárov, dizajnérov a manažérov tímov s prednáškami o modernom webe.',
         'Kultúrne centrum, Žilina',
         '2026-09-24 09:00:00',
         'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80'
@@ -68,7 +68,7 @@ VALUES
         'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80'
     );
 
--- Optional contact message for dashboard demonstration.
+-- Kontaktná správa zobrazená v administrácii.
 INSERT INTO contact_messages (name, email, message)
 VALUES
     ('Jana Nováková', 'jana@example.com', 'Dobrý deň, chcela by som sa informovať o možnosti pridania vlastného podujatia.');

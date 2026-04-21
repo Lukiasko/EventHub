@@ -8,15 +8,15 @@ USE eventhub;
 
 SET NAMES utf8mb4;
 
--- Tables are dropped in dependency order so the schema can be re-imported
--- easily during development in XAMPP/phpMyAdmin.
+-- Tabuľky sa mažú v poradí podľa závislostí, aby bolo možné schému
+-- opakovane importovať počas lokálneho vývoja.
 DROP TABLE IF EXISTS contact_messages;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS admins;
 
--- Administrators for protected admin area.
--- Passwords must be stored as hashes created by PHP password_hash().
+-- Administrátori pre chránenú administračnú časť.
+-- Heslá sú uložené ako hashe vytvorené funkciou password_hash().
 CREATE TABLE admins (
     id INT UNSIGNED AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE admins (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
--- Event categories. One category can contain many events.
+-- Kategórie podujatí. Jedna kategória môže obsahovať viac podujatí.
 CREATE TABLE categories (
     id INT UNSIGNED AUTO_INCREMENT,
     name VARCHAR(120) NOT NULL,
@@ -41,9 +41,9 @@ CREATE TABLE categories (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
--- Events shown on the public website.
--- category_id is nullable because ON DELETE SET NULL keeps the event
--- even if its category is deleted.
+-- Podujatia zobrazované na verejnej časti webu.
+-- Stĺpec category_id je voliteľný, pretože ON DELETE SET NULL zachová
+-- podujatie aj po odstránení jeho kategórie.
 CREATE TABLE events (
     id INT UNSIGNED AUTO_INCREMENT,
     category_id INT UNSIGNED NULL,
@@ -67,7 +67,7 @@ CREATE TABLE events (
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
 
--- Messages submitted from the contact form.
+-- Správy odoslané cez kontaktný formulár.
 CREATE TABLE contact_messages (
     id INT UNSIGNED AUTO_INCREMENT,
     name VARCHAR(120) NOT NULL,
