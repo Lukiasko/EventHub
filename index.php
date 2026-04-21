@@ -24,6 +24,9 @@ $routes = [
     'events' => [EventController::class, 'index'],
     'event_detail' => [EventController::class, 'detail'],
     'contact' => [ContactController::class, 'index'],
+    'register' => [UserController::class, 'register'],
+    'user_login' => [UserController::class, 'login'],
+    'user_logout' => [UserController::class, 'logout'],
     'login' => [AuthController::class, 'login'],
     'logout' => [AuthController::class, 'logout'],
 
