@@ -18,7 +18,7 @@
                 <?php if (Session::get('user_id')): ?>
                     <span class="nav-user"><?= e(Session::get('username', 'Používateľ')) ?></span>
                     <a href="<?= url('user_logout') ?>">Odhlásenie</a>
-                <?php else: ?>
+                <?php elseif (!Session::get('admin_id')): ?>
                     <a href="<?= url('register') ?>">Registrácia</a>
                     <a href="<?= url('user_login') ?>">Prihlásenie</a>
                 <?php endif; ?>
