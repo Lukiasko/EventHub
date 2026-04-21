@@ -26,6 +26,22 @@ class Category extends Model
         return $category ?: null;
     }
 
+    public function existsByName(string $name, ?int $exceptId = null): bool
+    {
+        $sql = 'SELECT COUNT(*) FROM categories WHERE name = :name';
+        $params = ['name' => trim($name)];
+
+        if ($exceptId !== null) {
+            $sql .= ' AND id != :id';
+            $params['id'] = $exceptId;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+
+        return (int) $stmt->fetchColumn() > 0;
+    }
+
     public function create(array $data): bool
     {
         $stmt = $this->db->prepare('INSERT INTO categories (name) VALUES (:name)');

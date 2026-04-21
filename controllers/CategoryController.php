@@ -66,7 +66,7 @@ class CategoryController extends Controller
 
         if (is_post()) {
             $category = array_merge($category, $_POST);
-            $errors = $this->validateCategory($category);
+            $errors = $this->validateCategory($category, (int) $category['id']);
 
             if (!validate_csrf()) {
                 $errors[] = 'Formulár nie je platný. Skúste ho odoslať znova.';
@@ -122,12 +122,15 @@ class CategoryController extends Controller
         ], true);
     }
 
-    private function validateCategory(array $data): array
+    private function validateCategory(array $data, ?int $exceptId = null): array
     {
         $errors = [];
+        $name = trim((string) ($data['name'] ?? ''));
 
-        if (trim((string) ($data['name'] ?? '')) === '') {
+        if ($name === '') {
             $errors[] = 'Názov kategórie je povinný.';
+        } elseif ($this->categoryModel->existsByName($name, $exceptId)) {
+            $errors[] = 'Kategória s týmto názvom už existuje.';
         }
 
         return $errors;
