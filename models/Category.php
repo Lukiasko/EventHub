@@ -7,10 +7,10 @@ class Category extends Model
     public function all(): array
     {
         $stmt = $this->db->query(
-            'SELECT c.*, COUNT(e.id) AS events_count
+            'SELECT c.id, c.name, c.created_at, COUNT(e.id) AS events_count
              FROM categories c
              LEFT JOIN events e ON e.category_id = c.id
-             GROUP BY c.id
+             GROUP BY c.id, c.name, c.created_at
              ORDER BY c.name ASC'
         );
 

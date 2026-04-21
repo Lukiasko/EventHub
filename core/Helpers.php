@@ -55,11 +55,19 @@ function short_text(string $text, int $length = 140): string
 {
     $text = trim(strip_tags($text));
 
-    if (mb_strlen($text) <= $length) {
+    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+        if (mb_strlen($text) <= $length) {
+            return $text;
+        }
+
+        return mb_substr($text, 0, $length - 3) . '...';
+    }
+
+    if (strlen($text) <= $length) {
         return $text;
     }
 
-    return mb_substr($text, 0, $length - 3) . '...';
+    return substr($text, 0, $length - 3) . '...';
 }
 
 function csrf_token(): string
@@ -99,6 +107,10 @@ function event_image(?string $image): string
 
     if (preg_match('/^https?:\/\//', $image) === 1) {
         return $image;
+    }
+
+    if (str_starts_with($image, 'public/')) {
+        return asset($image);
     }
 
     return asset(UPLOAD_URL . $image);

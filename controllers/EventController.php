@@ -165,8 +165,11 @@ class EventController extends Controller
             $errors[] = 'Miesto konania je povinné.';
         }
 
-        if (trim((string) ($data['event_date'] ?? '')) === '') {
+        $eventDate = trim((string) ($data['event_date'] ?? ''));
+        if ($eventDate === '') {
             $errors[] = 'Dátum podujatia je povinný.';
+        } elseif (strtotime($eventDate) === false) {
+            $errors[] = 'Zadajte platný dátum podujatia.';
         }
 
         $categoryId = filter_var($data['category_id'] ?? null, FILTER_VALIDATE_INT);
