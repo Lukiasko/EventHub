@@ -7,13 +7,13 @@ SET NAMES utf8mb4;
 
 -- Predvolený administrátor:
 -- používateľské meno: admin
--- heslo: password
+-- heslo: admin123
 -- Hodnota nižšie je bcrypt hash kompatibilný s funkciou password_verify().
 -- Pri zmene hesla vytvorte nový hash pomocou:
--- echo password_hash('your-password', PASSWORD_DEFAULT);
+-- echo password_hash('admin123', PASSWORD_DEFAULT);
 INSERT INTO admins (username, password)
 VALUES
-    ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+    ('admin', '$2y$10$Hj0lZO7sxJs3GTEr7daUu.BP2Puuvzc.tK3.Zdr/TyGfrehTRYiiW');
 
 -- Predvolený používateľ:
 -- používateľské meno: user

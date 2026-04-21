@@ -5,7 +5,6 @@
             <h1>Objav najzaujímavejšie podujatia na jednom mieste</h1>
             <p>Koncerty, workshopy, prednášky aj komunitné stretnutia nájdeš prehľadne v jednom modernom portáli.</p>
             <div class="hero-actions">
-                <a class="btn btn-primary" href="<?= url('register') ?>">Registrovať sa</a>
                 <a class="btn btn-primary" href="<?= url('events') ?>">Zobraziť podujatia</a>
                 <a class="btn btn-secondary" href="<?= url('contact') ?>">Kontaktovať nás</a>
             </div>

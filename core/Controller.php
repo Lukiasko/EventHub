@@ -23,9 +23,7 @@ class Controller
 
     protected function requireAdmin(): void
     {
-        if (Session::get('admin_id') === null) {
-            Session::flash('error', 'Pre vstup do administrácie sa musíte prihlásiť.');
-            redirect('login');
-        }
+        $auth = new Auth(new Admin());
+        $auth->requireLogin();
     }
 }

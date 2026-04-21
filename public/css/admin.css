@@ -173,6 +173,42 @@ a {
     font-size: 2.2rem;
 }
 
+.welcome-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.welcome-panel h2 {
+    margin: 0 0 8px;
+}
+
+.welcome-panel p:last-child {
+    margin-bottom: 0;
+}
+
+.dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.dashboard-actions a {
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #ecfdf3;
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.dashboard-actions .danger-link {
+    background: #fee4e2;
+    color: var(--danger);
+}
+
 .admin-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
@@ -350,9 +386,18 @@ textarea {
     }
 
     .admin-page-header,
-    .panel-heading {
+    .panel-heading,
+    .welcome-panel {
         align-items: stretch;
         flex-direction: column;
+    }
+
+    .dashboard-actions {
+        justify-content: stretch;
+    }
+
+    .dashboard-actions a {
+        text-align: center;
     }
 
     .flash {

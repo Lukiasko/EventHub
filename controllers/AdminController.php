@@ -14,6 +14,7 @@ class AdminController extends Controller
 
         $this->render('admin/dashboard', [
             'pageTitle' => 'Administrácia',
+            'adminUsername' => Session::get('admin_username', 'admin'),
             'eventsCount' => $eventModel->count(),
             'upcomingCount' => $eventModel->countUpcoming(),
             'categoriesCount' => $categoryModel->count(),

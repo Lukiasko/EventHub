@@ -11,6 +11,11 @@ class AuthController extends Controller
         $this->auth = new Auth(new Admin());
     }
 
+    public function showLogin(): void
+    {
+        $this->login();
+    }
+
     public function login(): void
     {
         if ($this->auth->check()) {
@@ -29,7 +34,7 @@ class AuthController extends Controller
             }
 
             if ($username === '' || $password === '') {
-                $errors[] = 'Používateľské meno aj heslo sú povinné.';
+                $errors[] = 'Vyplňte používateľské meno aj heslo.';
             }
 
             if ($errors === [] && $this->auth->attempt($username, $password)) {
@@ -43,7 +48,7 @@ class AuthController extends Controller
         }
 
         $this->render('auth/login', [
-            'pageTitle' => 'Prihlásenie',
+            'pageTitle' => 'Prihlásenie do administrácie',
             'errors' => $errors,
             'username' => $username,
         ]);
@@ -54,6 +59,6 @@ class AuthController extends Controller
         $this->auth->logout();
         Session::start();
         Session::flash('success', 'Boli ste odhlásený.');
-        redirect('home');
+        redirect('login');
     }
 }

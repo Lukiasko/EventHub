@@ -6,6 +6,19 @@
     <a class="btn" href="<?= url('admin_event_create') ?>">Pridať podujatie</a>
 </section>
 
+<section class="panel welcome-panel">
+    <div>
+        <p class="muted">Vitajte v administrácii</p>
+        <h2>Dobrý deň, <?= e($adminUsername) ?></h2>
+        <p>Tu môžete spravovať obsah portálu EventHub.</p>
+    </div>
+    <div class="dashboard-actions">
+        <a href="<?= url('admin_events') ?>">Správa podujatí</a>
+        <a href="<?= url('admin_categories') ?>">Správa kategórií</a>
+        <a class="danger-link" href="<?= url('logout') ?>">Odhlásiť sa</a>
+    </div>
+</section>
+
 <section class="stats-grid">
     <div class="stat-card">
         <span>Všetky podujatia</span>

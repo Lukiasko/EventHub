@@ -50,8 +50,6 @@ class Auth
 
     public function logout(): void
     {
-        Session::remove('admin_id');
-        Session::remove('admin_username');
-        Session::regenerate();
+        Session::destroy();
     }
 }

@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS admins;
 -- Heslá sú uložené ako hashe vytvorené funkciou password_hash().
 CREATE TABLE admins (
     id INT UNSIGNED AUTO_INCREMENT,
-    username VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
