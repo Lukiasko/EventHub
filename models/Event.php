@@ -34,7 +34,7 @@ class Event extends Model
              ORDER BY e.event_date ASC
              LIMIT :limit'
         );
-        $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -49,7 +49,7 @@ class Event extends Model
              ORDER BY e.created_at DESC
              LIMIT :limit'
         );
-        $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll();

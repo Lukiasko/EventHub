@@ -19,7 +19,7 @@ function asset(string $path): string
     return ltrim($path, '/');
 }
 
-function redirect(string $page, array $params = []): never
+function redirect(string $page, array $params = []): void
 {
     header('Location: ' . url($page, $params));
     exit;

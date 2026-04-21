@@ -25,7 +25,7 @@ class ContactMessage extends Model
              ORDER BY created_at DESC
              LIMIT :limit'
         );
-        $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll();
