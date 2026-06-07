@@ -11,6 +11,7 @@ SET NAMES utf8mb4;
 -- Tabuľky sa mažú v poradí podľa závislostí, aby bolo možné schému
 -- opakovane importovať počas lokálneho vývoja.
 DROP TABLE IF EXISTS contact_messages;
+DROP TABLE IF EXISTS event_registrations;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
@@ -36,12 +37,40 @@ CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL,
     email VARCHAR(180) NOT NULL,
+    nickname VARCHAR(100) NULL,
+    avatar VARCHAR(255) NULL,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
     UNIQUE KEY idx_users_username (username),
     UNIQUE KEY idx_users_email (email)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+-- Prihlásenia používateľov na podujatia bez platby.
+CREATE TABLE event_registrations (
+    id INT UNSIGNED AUTO_INCREMENT,
+    user_id INT UNSIGNED NOT NULL,
+    event_id INT UNSIGNED NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (id),
+    UNIQUE KEY idx_event_registrations_user_event (user_id, event_id),
+    KEY idx_event_registrations_user_id (user_id),
+    KEY idx_event_registrations_event_id (event_id),
+
+    CONSTRAINT fk_event_registrations_user
+        FOREIGN KEY (user_id)
+        REFERENCES users (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT fk_event_registrations_event
+        FOREIGN KEY (event_id)
+        REFERENCES events (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_unicode_ci;
@@ -112,7 +141,7 @@ VALUES
 -- heslo: password
 INSERT INTO users (username, email, password)
 VALUES
-    ('user', 'user@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+    ('user', 'user@example.com', 'EventFan', NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 
 -- Základné kategórie podujatí.
 INSERT INTO categories (name)
@@ -165,6 +194,18 @@ VALUES
         'Coworking Centrum, Košice',
         '2026-06-03 16:30:00',
         'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80'
+    );
+
+-- Ukážkové prihlásenia na podujatia pre predvoleného používateľa.
+INSERT INTO event_registrations (user_id, event_id)
+VALUES
+    (
+        (SELECT id FROM users WHERE username = 'user'),
+        (SELECT id FROM events WHERE title = 'Jarný mestský koncert')
+    ),
+    (
+        (SELECT id FROM users WHERE username = 'user'),
+        (SELECT id FROM events WHERE title = 'PHP workshop pre začiatočníkov')
     );
 
 -- Kontaktná správa zobrazená v administrácii.

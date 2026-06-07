@@ -115,3 +115,18 @@ function event_image(?string $image): string
 
     return asset(UPLOAD_URL . $image);
 }
+
+function user_avatar(?string $avatar): string
+{
+    $avatar = trim((string) $avatar);
+
+    if ($avatar === '') {
+        return '';
+    }
+
+    if (preg_match('/^https?:\/\//', $avatar) === 1) {
+        return $avatar;
+    }
+
+    return asset($avatar);
+}
