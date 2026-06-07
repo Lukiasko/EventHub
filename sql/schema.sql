@@ -139,7 +139,7 @@ VALUES
 -- používateľské meno: user
 -- email: user@example.com
 -- heslo: password
-INSERT INTO users (username, email, password)
+INSERT INTO users (username, email, nickname, avatar, password)
 VALUES
     ('user', 'user@example.com', 'EventFan', NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
 
