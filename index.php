@@ -27,6 +27,9 @@ $routes = [
     'register' => [UserController::class, 'register'],
     'user_login' => [AuthController::class, 'login'],
     'user_logout' => [UserController::class, 'logout'],
+    'profile' => [UserController::class, 'profile'],
+    'event_register' => [EventController::class, 'registerForEvent'],
+    'event_unregister' => [EventController::class, 'unregisterFromEvent'],
     'login' => [AuthController::class, 'login'],
     'logout' => [AuthController::class, 'logout'],
 

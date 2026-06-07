@@ -26,4 +26,12 @@ class Controller
         $auth = new Auth(new Admin());
         $auth->requireLogin();
     }
+
+    protected function requireUser(): void
+    {
+        if (Session::get('user_id') === null) {
+            Session::flash('error', 'Pre túto akciu sa musíte prihlásiť.');
+            redirect('login');
+        }
+    }
 }

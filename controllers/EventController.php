@@ -42,7 +42,73 @@ class EventController extends Controller
         $this->render('event_detail', [
             'pageTitle' => $event['title'],
             'event' => $event,
+            'isLoggedIn' => Session::get('user_id') !== null,
+            'isRegistered' => Session::get('user_id') !== null
+                ? (new User())->isRegisteredForEvent((int) Session::get('user_id'), (int) $event['id'])
+                : false,
         ]);
+    }
+
+    public function registerForEvent(): void
+    {
+        $this->requireUser();
+
+        $eventId = request_int('id');
+        $event = $eventId ? $this->eventModel->find($eventId) : null;
+        $userId = (int) Session::get('user_id');
+
+        if (!$event) {
+            Session::flash('error', 'Podujatie nebolo nájdené.');
+            redirect('events');
+        }
+
+        if (!is_post()) {
+            redirect('event_detail', ['id' => $eventId]);
+        }
+
+        if (!validate_csrf()) {
+            Session::flash('error', 'Formulár nie je platný. Skúste to znova.');
+            redirect('event_detail', ['id' => $eventId]);
+        }
+
+        $userModel = new User();
+
+        if ($userModel->isRegisteredForEvent($userId, (int) $event['id'])) {
+            Session::flash('error', 'Na tomto podujatí už ste prihlásený.');
+            redirect('event_detail', ['id' => $eventId]);
+        }
+
+        $userModel->registerForEvent($userId, (int) $event['id']);
+        Session::flash('success', 'Na podujatie ste sa úspešne prihlásili.');
+        redirect('event_detail', ['id' => $eventId]);
+    }
+
+    public function unregisterFromEvent(): void
+    {
+        $this->requireUser();
+
+        $eventId = request_int('id');
+        $event = $eventId ? $this->eventModel->find($eventId) : null;
+        $userId = (int) Session::get('user_id');
+
+        if (!$event) {
+            Session::flash('error', 'Podujatie nebolo nájdené.');
+            redirect('events');
+        }
+
+        if (!is_post()) {
+            redirect('event_detail', ['id' => $eventId]);
+        }
+
+        if (!validate_csrf()) {
+            Session::flash('error', 'Formulár nie je platný. Skúste to znova.');
+            redirect('event_detail', ['id' => $eventId]);
+        }
+
+        $userModel = new User();
+        $userModel->unregisterFromEvent($userId, (int) $event['id']);
+        Session::flash('success', 'Odhlásenie z podujatia bolo úspešné.');
+        redirect('event_detail', ['id' => $eventId]);
     }
 
     public function adminIndex(): void
