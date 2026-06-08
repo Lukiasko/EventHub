@@ -123,6 +123,28 @@ class Event extends Model
         return (int) $stmt->fetchColumn();
     }
 
+    public function registrations(): array
+    {
+        $stmt = $this->db->query(
+            'SELECT er.created_at AS registered_at,
+                    e.id AS event_id,
+                    e.title AS event_title,
+                    e.event_date,
+                    c.name AS category_name,
+                    u.id AS user_id,
+                    u.username,
+                    u.nickname,
+                    u.email
+             FROM event_registrations er
+             INNER JOIN events e ON e.id = er.event_id
+             LEFT JOIN categories c ON c.id = e.category_id
+             INNER JOIN users u ON u.id = er.user_id
+             ORDER BY e.event_date ASC, er.created_at ASC'
+        );
+
+        return $stmt->fetchAll();
+    }
+
     private function mapData(array $data): array
     {
         return [

@@ -15,6 +15,7 @@
     <div class="dashboard-actions">
         <a href="<?= url('admin_events') ?>">Správa podujatí</a>
         <a href="<?= url('admin_categories') ?>">Správa kategórií</a>
+        <a href="<?= url('admin_registrations') ?>">Prihlásenia na podujatia</a>
         <a class="danger-link" href="<?= url('logout') ?>">Odhlásiť sa</a>
     </div>
 </section>

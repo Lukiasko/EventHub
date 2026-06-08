@@ -49,10 +49,6 @@ class UserController extends Controller
 
     public function login(): void
     {
-        if (Session::get('user_id') !== null) {
-            redirect('home');
-        }
-
         $errors = [];
         $login = '';
 
@@ -91,6 +87,75 @@ class UserController extends Controller
         Session::start();
         Session::flash('success', 'Boli ste odhlásený.');
         redirect('home');
+    }
+
+    public function profile(): void
+    {
+        $this->requireUser();
+
+        $userId = (int) Session::get('user_id');
+        $user = $this->userModel->findById($userId);
+
+        if (!$user) {
+            Session::destroy();
+            Session::start();
+            Session::flash('error', 'Používateľ nebol nájdený.');
+            redirect('login');
+        }
+
+        $errors = [];
+
+        if (is_post()) {
+            if (!validate_csrf()) {
+                $errors[] = 'Formulár nie je platný. Skúste ho odoslať znova.';
+            }
+
+            $nickname = trim((string) ($_POST['nickname'] ?? ''));
+
+            if ($nickname === '') {
+                $errors[] = 'Prezývka je povinná.';
+            } elseif (strlen($nickname) < 2) {
+                $errors[] = 'Prezývka musí mať aspoň 2 znaky.';
+            }
+
+            $avatarPath = $user['avatar'];
+            if ($errors === []) {
+                $avatarErrors = [];
+                $newAvatarPath = $this->handleAvatarUpload($userId, $avatarErrors, $user['avatar']);
+                $errors = array_merge($errors, $avatarErrors);
+
+                if ($errors === []) {
+                    $profileUpdated = $this->userModel->updateProfile($userId, [
+                        'nickname' => $nickname,
+                        'avatar' => $newAvatarPath,
+                    ]);
+
+                    if ($profileUpdated) {
+                        $this->deleteStoredAvatar($user['avatar']);
+                    } elseif ($newAvatarPath !== null && $newAvatarPath !== $user['avatar']) {
+                        $this->deleteStoredAvatar($newAvatarPath);
+                    }
+
+                    Session::set('username', $nickname);
+                    Session::flash('success', 'Profil bol úspešne upravený.');
+                    redirect('profile');
+                }
+
+                $avatarPath = $newAvatarPath;
+            }
+
+            $user = array_merge($user, [
+                'nickname' => $nickname,
+                'avatar' => $avatarPath,
+            ]);
+        }
+
+        $this->render('profile', [
+            'pageTitle' => 'Profil používateľa',
+            'user' => $user,
+            'registeredEvents' => $this->userModel->registeredEvents($userId),
+            'errors' => $errors,
+        ]);
     }
 
     private function validateRegistration(array $data): array
@@ -135,8 +200,95 @@ class UserController extends Controller
 
         Session::regenerate();
         Session::set('user_id', (int) $user['id']);
-        Session::set('username', $user['username']);
+        $displayName = trim((string) ($user['nickname'] ?? ''));
+        Session::set('username', $displayName !== '' ? $displayName : $user['username']);
 
         return true;
+    }
+
+    private function handleAvatarUpload(int $userId, array &$errors, ?string $currentAvatar): ?string
+    {
+        $avatarFile = $_FILES['avatar'] ?? null;
+
+        if (!is_array($avatarFile) || ($avatarFile['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+            return $currentAvatar;
+        }
+
+        if (($avatarFile['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+            $errors[] = 'Profilovú fotku sa nepodarilo nahrať.';
+            return $currentAvatar;
+        }
+
+        if (($avatarFile['size'] ?? 0) > 2 * 1024 * 1024) {
+            $errors[] = 'Profilová fotka môže mať najviac 2 MB.';
+            return $currentAvatar;
+        }
+
+        $imageInfo = @getimagesize((string) $avatarFile['tmp_name']);
+        if ($imageInfo === false || !isset($imageInfo['mime'])) {
+            $errors[] = 'Profilová fotka musí byť obrázok.';
+            return $currentAvatar;
+        }
+
+        $mimeToExtension = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/webp' => 'webp',
+        ];
+
+        $mime = (string) $imageInfo['mime'];
+        if (!isset($mimeToExtension[$mime])) {
+            $errors[] = 'Podporované sú len formáty JPG, PNG, GIF a WEBP.';
+            return $currentAvatar;
+        }
+
+        $uploadDirectory = APP_ROOT . '/public/uploads/users';
+        if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0775, true) && !is_dir($uploadDirectory)) {
+            $errors[] = 'Nepodarilo sa pripraviť priečinok pre profilovú fotku.';
+            return $currentAvatar;
+        }
+
+        $filename = 'user_' . $userId . '.' . $mimeToExtension[$mime];
+        $targetPath = $uploadDirectory . '/' . $filename;
+
+        $this->removeUserAvatarVariants($uploadDirectory, $userId, $currentAvatar);
+
+        if (!move_uploaded_file((string) $avatarFile['tmp_name'], $targetPath)) {
+            $errors[] = 'Profilovú fotku sa nepodarilo uložiť.';
+            return $currentAvatar;
+        }
+
+        return 'public/uploads/users/' . $filename;
+    }
+
+    private function deleteStoredAvatar(?string $avatarPath): void
+    {
+        $avatarPath = trim((string) $avatarPath);
+
+        if ($avatarPath === '' || preg_match('/^https?:\/\//', $avatarPath) === 1) {
+            return;
+        }
+
+        if (!str_starts_with($avatarPath, 'public/uploads/users/')) {
+            return;
+        }
+
+        $fullPath = APP_ROOT . '/' . ltrim($avatarPath, '/');
+
+        if (is_file($fullPath)) {
+            @unlink($fullPath);
+        }
+    }
+
+    private function removeUserAvatarVariants(string $uploadDirectory, int $userId, ?string $currentAvatar): void
+    {
+        foreach (glob($uploadDirectory . '/user_' . $userId . '.*') ?: [] as $filePath) {
+            if (is_file($filePath)) {
+                @unlink($filePath);
+            }
+        }
+
+        $this->deleteStoredAvatar($currentAvatar);
     }
 }

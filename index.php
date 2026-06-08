@@ -34,6 +34,7 @@ $routes = [
     'logout' => [AuthController::class, 'logout'],
 
     'admin_dashboard' => [AdminController::class, 'dashboard'],
+    'admin_registrations' => [AdminController::class, 'registrations'],
     'admin_events' => [EventController::class, 'adminIndex'],
     'admin_event_create' => [EventController::class, 'adminCreate'],
     'admin_event_edit' => [EventController::class, 'adminEdit'],

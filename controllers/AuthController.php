@@ -83,7 +83,8 @@ class AuthController extends Controller
 
         Session::regenerate();
         Session::set('user_id', (int) $user['id']);
-        Session::set('username', $user['username']);
+        $displayName = trim((string) ($user['nickname'] ?? ''));
+        Session::set('username', $displayName !== '' ? $displayName : $user['username']);
 
         return true;
     }

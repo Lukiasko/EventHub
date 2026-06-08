@@ -27,7 +27,24 @@
                 <span>Kategória</span>
                 <strong><?= e($event['category_name']) ?></strong>
             </div>
-            <a class="btn btn-primary" href="<?= url('contact') ?>">Mám otázku</a>
+            <?php if ($isLoggedIn): ?>
+                <p class="event-note">Prihlásenie na podujatie je bez platenia.</p>
+                <?php if ($isRegistered): ?>
+                    <form method="post" action="<?= url('event_unregister', ['id' => $event['id']]) ?>">
+                        <?= csrf_field() ?>
+                    <button class="btn btn-secondary btn-full" type="submit">Odhlásiť sa z podujatia</button>
+                </form>
+                <?php else: ?>
+                    <form method="post" action="<?= url('event_register', ['id' => $event['id']]) ?>">
+                        <?= csrf_field() ?>
+                        <button class="btn btn-primary btn-full" type="submit">Prihlásiť sa na podujatie</button>
+                    </form>
+                <?php endif; ?>
+            <?php else: ?>
+                <p class="event-note">Prihlásenie na podujatie je bez platenia.</p>
+                <a class="btn btn-primary btn-full" href="<?= url('login') ?>">Prihlásiť sa</a>
+            <?php endif; ?>
+            <a class="btn btn-secondary btn-full" href="<?= url('contact') ?>">Mám otázku</a>
         </aside>
     </div>
 </section>

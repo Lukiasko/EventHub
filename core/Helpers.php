@@ -128,5 +128,12 @@ function user_avatar(?string $avatar): string
         return $avatar;
     }
 
-    return asset($avatar);
+    $url = asset($avatar);
+    $fullPath = APP_ROOT . '/' . ltrim($avatar, '/');
+
+    if (is_file($fullPath)) {
+        $url .= '?v=' . filemtime($fullPath);
+    }
+
+    return $url;
 }

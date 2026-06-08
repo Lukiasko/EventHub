@@ -39,12 +39,15 @@ class EventController extends Controller
             return;
         }
 
+        $userModel = new User();
+        $userId = Session::get('user_id') !== null ? (int) Session::get('user_id') : null;
+
         $this->render('event_detail', [
             'pageTitle' => $event['title'],
             'event' => $event,
-            'isLoggedIn' => Session::get('user_id') !== null,
-            'isRegistered' => Session::get('user_id') !== null
-                ? (new User())->isRegisteredForEvent((int) Session::get('user_id'), (int) $event['id'])
+            'isLoggedIn' => $userId !== null,
+            'isRegistered' => $userId !== null
+                ? $userModel->isRegisteredForEvent($userId, (int) $event['id'])
                 : false,
         ]);
     }

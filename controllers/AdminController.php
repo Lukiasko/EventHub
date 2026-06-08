@@ -23,4 +23,16 @@ class AdminController extends Controller
             'latestMessages' => $messageModel->latest(5),
         ], true);
     }
+
+    public function registrations(): void
+    {
+        $this->requireAdmin();
+
+        $eventModel = new Event();
+
+        $this->render('admin/registrations', [
+            'pageTitle' => 'Prihlásenia na podujatia',
+            'registrations' => $eventModel->registrations(),
+        ], true);
+    }
 }

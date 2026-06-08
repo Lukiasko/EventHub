@@ -17,6 +17,7 @@
                 <a href="<?= url('contact') ?>">Kontakt</a>
                 <?php if (Session::get('user_id')): ?>
                     <span class="nav-user"><?= e(Session::get('username', 'Používateľ')) ?></span>
+                    <a href="<?= url('profile') ?>">Profil</a>
                     <a href="<?= url('user_logout') ?>">Odhlásenie</a>
                 <?php elseif (!Session::get('admin_id')): ?>
                     <a class="nav-register" href="<?= url('register') ?>">Registrácia</a>

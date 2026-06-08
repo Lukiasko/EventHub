@@ -13,6 +13,7 @@
             <a href="<?= url('admin_dashboard') ?>">Prehľad</a>
             <a href="<?= url('admin_events') ?>">Podujatia</a>
             <a href="<?= url('admin_categories') ?>">Kategórie</a>
+            <a href="<?= url('admin_registrations') ?>">Prihlásenia</a>
             <a href="<?= url('home') ?>">Verejný web</a>
             <a href="<?= url('logout') ?>">Odhlásiť sa</a>
         </nav>
