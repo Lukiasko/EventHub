@@ -86,6 +86,7 @@ class AuthController extends Controller
         $displayName = trim((string) ($user['nickname'] ?? ''));
         Session::set('username', $displayName !== '' ? $displayName : $user['username']);
 
+        
         return true;
     }
 }
