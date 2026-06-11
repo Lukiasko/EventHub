@@ -75,8 +75,8 @@
     <div class="container about-band">
         <div>
             <p class="eyebrow">O EventHube</p>
-            <h2>tvoja brána k najlepším podujatiam</h2>
+            <h2>Objav tie najlepšie podujatia na jednom mieste</h2>
         </div>
-        <p>EventHub spája verejný katalóg podujatí s administračnou časťou pre správu kategórií a udalostí. Aplikácia používa objektovo orientované PHP, PDO, sessions a bezpečné ukladanie hesiel.</p>
+        <p>EventHub ti prináša koncerty, festivaly, športové podujatia, konferencie a ďalšie zaujímavé eventy. Vyhľadaj si akcie podľa kategórie, dátumu alebo lokality a nezmeškaj to, čo ťa baví.</p>
     </div>
 </section>
