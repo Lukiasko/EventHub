@@ -7,7 +7,7 @@
                 <p>Moderný portál pre vyhľadávanie a správu podujatí.</p>
             </div>
             <div>
-                <span>PHP aplikácia pre správu podujatí</span>
+                <span></span>
                 <span><?= date('Y') ?></span>
             </div>
         </div>
