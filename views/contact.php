@@ -10,9 +10,9 @@
     <div class="container contact-grid">
         <div class="contact-info">
             <h2>EventHub tím</h2>
-            <p>Správy sa ukladajú do databázy a administrátor ich vidí na dashboarde.</p>
+            <p>Máte otázku k podujatiu alebo potrebujete pomoc? Napíšte nám a radi vám odpovieme</p>
             <ul>
-                <li>E-mail: info@eventhub.local</li>
+                <li>E-mail: support@eventhub.sk</li>
                 <li>Mesto: Bratislava</li>
                 <li>Odpoveď zvyčajne do 2 pracovných dní</li>
             </ul>

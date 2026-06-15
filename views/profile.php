@@ -95,10 +95,45 @@ $avatarUrl = user_avatar($user['avatar']);
                                     <p><?= e($registeredEvent['location']) ?> · <?= e(format_date($registeredEvent['event_date'])) ?></p>
                                     <small>Prihlásený od <?= e(format_date($registeredEvent['registered_at'])) ?></small>
                                 </div>
-                                <form method="post" action="<?= url('event_unregister', ['id' => $registeredEvent['id']]) ?>">
-                                    <?= csrf_field() ?>
-                                    <button class="btn btn-secondary" type="submit">Odhlásiť</button>
-                                </form>
+                                <div class="registered-actions">
+                                    <?php
+                                    // use PHP's default timezone (local) for start/end
+                                    $tzName = date_default_timezone_get();
+                                    try {
+                                        $tz = new DateTimeZone($tzName);
+                                    } catch (Exception $e) {
+                                        $tz = new DateTimeZone('UTC');
+                                        $tzName = 'UTC';
+                                    }
+
+                                    try {
+                                        $start = new DateTimeImmutable($registeredEvent['event_date'], $tz);
+                                    } catch (Exception $e) {
+                                        $start = new DateTimeImmutable('now', $tz);
+                                    }
+
+                                    $end = $start->modify('+2 hours'); // predvolená dĺžka 2 hodiny
+
+                                    $dtstart = $start->format('Ymd\\THis');
+                                    $dtend = $end->format('Ymd\\THis');
+                                    $gdates = $dtstart . '/' . $dtend;
+
+                                    $text = urlencode((string) ($registeredEvent['title'] ?? 'Podujatie'));
+                                    $details = urlencode((string) ($registeredEvent['description'] ?? ''));
+                                    $location = urlencode((string) ($registeredEvent['location'] ?? ''));
+                                    $gcalUrl = 'https://www.google.com/calendar/render?action=TEMPLATE'
+                                        . '&text=' . $text
+                                        . '&dates=' . $gdates
+                                        . '&details=' . $details
+                                        . '&location=' . $location
+                                        . '&ctz=' . urlencode($tzName);
+                                    ?>
+                                    <a class="btn btn-primary" href="<?= $gcalUrl ?>" target="_blank" rel="noopener noreferrer">Pridať do kalendára</a>
+                                    <form method="post" action="<?= url('event_unregister', ['id' => $registeredEvent['id']]) ?>">
+                                        <?= csrf_field() ?>
+                                        <button class="btn btn-secondary" type="submit">Odhlásiť</button>
+                                    </form>
+                                </div>
                             </article>
                         <?php endforeach; ?>
                     </div>

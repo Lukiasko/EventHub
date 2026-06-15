@@ -30,6 +30,7 @@ $routes = [
     'profile' => [UserController::class, 'profile'],
     'event_register' => [EventController::class, 'registerForEvent'],
     'event_unregister' => [EventController::class, 'unregisterFromEvent'],
+    'event_ics' => [EventController::class, 'downloadIcs'],
     'login' => [AuthController::class, 'login'],
     'logout' => [AuthController::class, 'logout'],
 
