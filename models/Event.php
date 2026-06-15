@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 class Event extends Model
 {
-    public function all(?int $categoryId = null): array
+    public function all(?int $categoryId = null, ?string $search = null): array
     {
         $sql = 'SELECT e.*, c.name AS category_name
                 FROM events e
                 INNER JOIN categories c ON c.id = e.category_id';
         $params = [];
 
+        $conditions = [];
         if ($categoryId !== null) {
-            $sql .= ' WHERE e.category_id = :category_id';
+            $conditions[] = 'e.category_id = :category_id';
             $params['category_id'] = $categoryId;
+        }
+
+        if ($search !== null && trim($search) !== '') {
+            $conditions[] = 'e.title LIKE :search';
+            $params['search'] = '%' . $search . '%';
+        }
+
+        if ($conditions !== []) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
         }
 
         $sql .= ' ORDER BY e.event_date ASC';

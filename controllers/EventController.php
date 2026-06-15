@@ -16,12 +16,15 @@ class EventController extends Controller
     public function index(): void
     {
         $categoryId = request_int('category');
+        $searchRaw = filter_input(INPUT_GET, 'q', FILTER_UNSAFE_RAW);
+        $search = $searchRaw !== null ? trim((string) $searchRaw) : null;
 
         $this->render('events', [
             'pageTitle' => 'Podujatia',
-            'events' => $this->eventModel->all($categoryId),
+            'events' => $this->eventModel->all($categoryId, $search),
             'categories' => $this->categoryModel->all(),
             'selectedCategory' => $categoryId,
+            'search' => $search,
         ]);
     }
 
