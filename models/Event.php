@@ -40,6 +40,23 @@ class Event extends Model
         return $stmt->fetchAll();
     }
 
+        public function featured(int $limit = 3): array
+        {
+                $stmt = $this->db->prepare(
+                        'SELECT e.*, c.name AS category_name
+                         FROM events e
+                         INNER JOIN categories c ON c.id = e.category_id
+                         WHERE e.is_featured = 1
+                             AND e.event_date >= NOW()
+                         ORDER BY e.event_date ASC
+                         LIMIT :limit'
+                );
+                $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+                $stmt->execute();
+
+                return $stmt->fetchAll();
+        }
+
     public function latest(int $limit = 5): array
     {
         $stmt = $this->db->prepare(
@@ -72,8 +89,8 @@ class Event extends Model
     public function create(array $data): bool
     {
         $stmt = $this->db->prepare(
-            'INSERT INTO events (category_id, title, description, location, event_date, image)
-             VALUES (:category_id, :title, :description, :location, :event_date, :image)'
+            'INSERT INTO events (category_id, title, description, location, event_date, image, is_featured)
+             VALUES (:category_id, :title, :description, :location, :event_date, :image, :is_featured)'
         );
 
         return $stmt->execute($this->mapData($data));
@@ -91,7 +108,8 @@ class Event extends Model
                  description = :description,
                  location = :location,
                  event_date = :event_date,
-                 image = :image
+                 image = :image,
+                 is_featured = :is_featured
              WHERE id = :id'
         );
 
@@ -154,6 +172,7 @@ class Event extends Model
             'location' => trim((string) $data['location']),
             'event_date' => str_replace('T', ' ', (string) $data['event_date']),
             'image' => trim((string) ($data['image'] ?? '')),
+            'is_featured' => (int) (!empty($data['is_featured']) ? 1 : 0),
         ];
     }
 }

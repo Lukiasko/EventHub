@@ -11,7 +11,7 @@ class HomeController extends Controller
 
         $this->render('home', [
             'pageTitle' => 'Domov',
-            'events' => $eventModel->upcoming(3),
+            'events' => $eventModel->featured(3),
             'categories' => $categoryModel->all(),
         ]);
     }

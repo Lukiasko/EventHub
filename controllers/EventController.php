@@ -334,6 +334,7 @@ class EventController extends Controller
             'location' => '',
             'event_date' => '',
             'image' => '',
+            'is_featured' => 0,
         ];
     }
 }

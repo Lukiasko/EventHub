@@ -51,3 +51,11 @@ if ($dateValue !== '') {
     Popis
     <textarea name="description" rows="8" required><?= e(old('description', $event)) ?></textarea>
 </label>
+
+<div class="form-actions">
+    <label class="checkbox-featured">
+        <input type="checkbox" name="is_featured" <?= old('is_featured', $event) ? 'checked' : '' ?>>
+        <span class="checkbox-box" aria-hidden="true"></span>
+        <span class="checkbox-text">Odporúčané podujatie</span>
+    </label>
+</div>

@@ -91,10 +91,6 @@ a {
     margin-bottom: 22px;
 }
 
-.admin-page-header h1,
-.panel-heading h2 {
-    margin: 0;
-}
 
 .muted {
     margin: 0 0 4px;
@@ -275,6 +271,60 @@ label {
     font-weight: 800;
 }
 
+/* Inline, user-friendly checkbox for admin forms */
+.checkbox-featured {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-featured input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.checkbox-box {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    transition: all 150ms ease;
+    flex: 0 0 20px;
+    position: relative;
+}
+
+.checkbox-featured input[type="checkbox"]:checked + .checkbox-box {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.checkbox-featured input[type="checkbox"]:checked + .checkbox-box::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 10px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-featured input[type="checkbox"]:focus + .checkbox-box {
+    box-shadow: 0 0 0 4px rgba(15,118,110,0.12);
+}
+
+.checkbox-text {
+    line-height: 1.2;
+}
+
 input,
 textarea,
 select {
@@ -294,6 +344,7 @@ textarea {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    
 }
 
 .confirm-box {

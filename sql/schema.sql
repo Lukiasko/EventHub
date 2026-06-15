@@ -68,6 +68,7 @@ CREATE TABLE events (
     location VARCHAR(180) NOT NULL,
     event_date DATETIME NOT NULL,
     image VARCHAR(500) NULL,
+    is_featured TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
